@@ -60,4 +60,7 @@ class Sentence(object):
     def size(self):
         return min(len(self.tokens),len(self.pos))
 
+    def get_text(self):
+        return ','.join([str(self.fileid), str(self.senid), '"%s"' % " ".join(self.tokens)])
+
 

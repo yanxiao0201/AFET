@@ -86,6 +86,7 @@ def pipeline(json_file, brown_file, outdir):
                 feature_ids, label_ids = ner_feature.extract(sentence, mention)
                 gx.write(m_id+'\t'+','.join([str(x) for x in feature_ids])+'\n')
                 gy.write(m_id+'\t'+','.join([str(x) for x in label_ids])+'\n')
+
                 mention_count += 1
                 count += 1
             except Exception as e:
@@ -115,6 +116,12 @@ def pipeline_test(json_file, brown_file, featurefile, labelfile, outdir):
     gx = open(outdir+'/test_x.txt', 'w')
     gy = open(outdir+'/test_y.txt', 'w')
 
+    '''
+    map from mention_id to text, saved in "mention_text.map"
+    '''
+
+    gz = open(outdir+'/mention_text.map', 'w')
+
     print 'start test feature generation'
     while reader.has_next():
             
@@ -128,6 +135,11 @@ def pipeline_test(json_file, brown_file, featurefile, labelfile, outdir):
                 if len(label_ids)>0:
                     gx.write(m_id+'\t'+','.join([str(x) for x in feature_ids])+'\n')
                     gy.write(m_id+'\t'+','.join([str(x) for x in label_ids])+'\n')
+
+                    if mention.start >= 0:
+                        gz.write(m_id+','+' '.join(sentence.tokens[mention.start:mention.end])+','+ \
+                        str(mention.start) +','+ str(mention.end)+ ','+ sentence.get_text() + '\n')
+
                     count += 1
             except Exception as e:
                 print e.message, e.args

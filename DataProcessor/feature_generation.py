@@ -31,6 +31,11 @@ if __name__ == "__main__":
     print 'Start nlp parsing'
     file = open(raw_train_json, 'r')
     sentences = file.readlines()
+
+    #truncate teh file
+    #sentences = sentences[:10]
+
+
     numOfProcesses = int(sys.argv[2])
     sentsPerProc = int(math.floor(len(sentences)*1.0/numOfProcesses))
     lock = Lock()
@@ -50,6 +55,9 @@ if __name__ == "__main__":
     file = open(raw_test_json, 'r')
     numOfProcesses = int(sys.argv[2])
     sentences = file.readlines()
+
+    #sentences = sentences[:10]
+
     sentsPerProc = int(math.floor(len(sentences)*1.0/numOfProcesses))
     processes = []
     lock = Lock()
