@@ -33,7 +33,7 @@ if __name__ == "__main__":
     sentences = file.readlines()
 
     #truncate teh file
-    #sentences = sentences[:10]
+    sentences = sentences[:10]
 
 
     numOfProcesses = int(sys.argv[2])
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     numOfProcesses = int(sys.argv[2])
     sentences = file.readlines()
 
-    #sentences = sentences[:10]
+    sentences = sentences[:10]
 
     sentsPerProc = int(math.floor(len(sentences)*1.0/numOfProcesses))
     processes = []

@@ -1,18 +1,19 @@
 import pandas as pd 
 
-mdic_data = pd.read_csv("Intermediate/BBN/mention_text.map", names = ['fmid','mention','start','end','pid','senid','sent'], header = None)
+data_set = "BioInfer"
+mdic_data = pd.read_csv("Intermediate/{}/mention_text.map".format(data_set), names = ['fmid','mention','start','end','pid','senid','sent'], header = None)
 
-mid_data = pd.read_csv("Intermediate/BBN/mention.txt", delimiter = '\t',names = ['fmid','mid'], header = None)
+mid_data = pd.read_csv("Intermediate/{}/mention.txt".format(data_set), delimiter = '\t',names = ['fmid','mid'], header = None)
 
 #print mid_data
 '''
 WSJ1825_2_15_16,corn,15,16,WSJ1825,2,"The harvest arrives in plenty after last year 's drought-ravaged effort : The government estimates corn output at 7.45 billion bushels , up 51 % from last fall ."
 '''
-t_data = pd.read_csv("Intermediate/BBN/type.txt", delimiter = '\t', names = ['type','tid','g'],header = None)
+t_data = pd.read_csv("Intermediate/{}/type.txt".format(data_set), delimiter = '\t', names = ['type','tid','g'],header = None)
 
 #print t_data
 
-r_data = pd.read_csv("Results/BBN/mention_type_pl_warp_bipartite.txt", delimiter = '\t', names = ['mid','tid','g'])
+r_data = pd.read_csv("Results/{}/mention_type_pl_warp_bipartite.txt".format(data_set), delimiter = '\t', names = ['mid','tid','g'])
 
 #print r_data
 
@@ -54,7 +55,7 @@ for index, row in r_data.iterrows():
 
 	
 import json
-with open('visualization.txt', 'w') as outfile:
+with open('{}_visualized_result.txt'.format(data_set), 'w') as outfile:
     json.dump(result, outfile, indent=4, sort_keys=True)
 
 
