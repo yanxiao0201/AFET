@@ -1,5 +1,5 @@
 #!/bin/sh
-Data='BBN'
+Data='BioInfer'
 Indir='Data/'$Data
 Intermediate='Intermediate/'$Data
 Outdir='Results/'$Data
@@ -21,3 +21,4 @@ echo ' '
 echo 'Step 3 Predict and Evaluate'
 python Evaluation/emb_prediction.py $Data pl_warp bipartite maximum cosine 0.25
 python Evaluation/evaluation.py $Data pl_warp bipartite
+

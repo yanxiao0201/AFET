@@ -33,9 +33,17 @@ def share_entity(entityfile, labelmap, output):
     # load label mapping
     f = open(labelmap)
     label_map = {}
+
+    #debug
+    label_reverse_map = {}
+
     for line in f:
         seg = line.strip('\r\n').split('\t')
         label_map[seg[0]] = int(seg[1])
+
+        #debug
+        label_reverse_map[int(seg[1])] = seg[0] 
+
     f.close()
 
     # load type entities
@@ -51,13 +59,29 @@ def share_entity(entityfile, labelmap, output):
     for i in xrange(0,size):
         for j in xrange(0,size):
             if i!=j:
+                print 'i,j', i, j
                 if i in type_entities and j in type_entities:
+                    print '@1'
                     Ei = type_entities[i]
                     Ej = type_entities[j]
+                    print '@2'
+
+                    print len(Ei)
+                    print len(Ej)
+                    print label_reverse_map[i]
+                    print label_reverse_map[j]
+
                     scoreij = len(Ei & Ej) / len(Ei)
                     scoreji = len(Ei & Ej) / len(Ej)
+                    print '@3'
+
+
                     if scoreij+scoreji > 0.000001:
+                        print '@4'
+
                         g.write(str(i)+'\t'+str(j)+'\t'+str((scoreij+scoreji)/2)+'\n')
+                    else:
+                        print 'x'
     g.close()
 
 

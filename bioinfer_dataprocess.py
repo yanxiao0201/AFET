@@ -2,6 +2,16 @@ import json
 import nltk
 import collections
 
+class Doc:
+	def __init__(self):
+		self.labels = []
+		self.text = ''
+
+	def add_label(self, label):
+		self.labels.extend(label)
+
+	def add_text(self, text):
+		self.text = text
 
 
 def main(mode, pretty):
@@ -24,16 +34,16 @@ def main(mode, pretty):
 		new_data["senid"] = int(data["sentId"])
 		new_data["mentions"] = []
 
-		tmp_dict = collections.defaultdict(list)
+		tmp_dict = collections.defaultdict(Doc)
 
 
 		for mention in data["entityMentions"]:
 
 
-			text = mention["text"]
-			text = nltk.word_tokenize(text.replace("*", " "))
+			old_text = mention["text"]
+			text = nltk.word_tokenize(old_text.replace("*", " "))
 
-			text_idx_list = getsubidx(new_data["tokens"], text)
+			text_idx_list = get_start_idx_list(new_data["tokens"], text)
 			
 			if len(text_idx_list) == 0:
 				print text_idx_list
@@ -41,14 +51,17 @@ def main(mode, pretty):
 				print text
 				exit(1)
 			else:
-				for start in text_idx_list:
-					end = start + len(text)
+				for (start, end) in text_idx_list:
 					label = mention["label"]
 					if label != "None" or label != "none":
-						tmp_dict[(start,end)].extend(label.split(','))
+						tmp_dict[(start,end,old_text)].add_label(label.split(','))
+						tmp_dict[(start,end,old_text)].add_text(old_text)
 
-		for start,end in tmp_dict:
-			new_mention = {"start":start, "labels":tmp_dict[(start,end)],"end": end}
+		for start,end,old_text in tmp_dict:
+			doc = tmp_dict[(start,end,old_text)]
+			new_mention = {"start":start, "labels":doc.labels,"end": end}
+			if pretty:
+				new_mention["text"] = doc.text
 
 			new_data["mentions"].append(new_mention)
 
@@ -64,41 +77,27 @@ def main(mode, pretty):
 				json.dump(d, outfile)
 			outfile.write('\n')
 
-def getsubidx(x, y):
-	res = []
-	l1, l2 = len(x), len(y)
-
-
+def get_start_idx_list(x, y):
+	rtn = []
+	l1 = len(x)
+	l2 = len(y)
 	i = 0
-	j = 0
-
-	while i < l1 and j < l2:
-		if y[j] in x[i]:
-			j += 1
-		else:
-			i += 1
-
+	while i < l1:
+		j = 0
+		i_save = None
+		first = True
+		while i < l1 and j < l2:
+			if y[j] in x[i]:
+				if first:
+					i_save = i
+					first = False
+				j += 1
+			else:
+				i += 1
 		if j == l2:
-				
-
-	if 	
-	
-	# for i in range(l1):
-	# 	is_sub = True
-	# 	for j in range(l2):
-	# 		if i+j < l2:
-	# 			if y[j] in x[i+j]:
-	# 				continue
-	# 			elif i+j > 0:
-	# 				if y[j] in x[i+j-1]:
-	# 					continue
-	# 				else:
-	# 		else:
-	# 			is_sub = False
-	# 			break
-	# 	if is_sub:
-	# 		res.append(i)
-	return res
+			rtn.append((i_save, i+1))
+			i += 1
+	return rtn
 
 
 if __name__ == '__main__':

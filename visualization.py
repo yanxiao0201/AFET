@@ -55,8 +55,12 @@ for index, row in r_data.iterrows():
 
 	
 import json
-with open('{}_visualized_result.txt'.format(data_set), 'w') as outfile:
-    json.dump(result, outfile, indent=4, sort_keys=True)
-
+with open('{}_visualized_result.json'.format(data_set), 'w') as outfile, \
+open('{}_pretty_visualized_result.json'.format(data_set), 'w') as outfile_p:
+	for d in result:
+		json.dump(d, outfile_p, indent=4, sort_keys=True)
+		outfile_p.write('\n')
+		json.dump(d, outfile)
+		outfile.write('\n')
 
 
