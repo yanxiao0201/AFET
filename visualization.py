@@ -1,6 +1,6 @@
 import pandas as pd 
 
-data_set = "BioInfer"
+data_set = "Acrobat"
 mdic_data = pd.read_csv("Intermediate/{}/mention_text.map".format(data_set), names = ['fmid','mention','start','end','pid','senid','sent'], header = None)
 
 mid_data = pd.read_csv("Intermediate/{}/mention.txt".format(data_set), delimiter = '\t',names = ['fmid','mid'], header = None)
