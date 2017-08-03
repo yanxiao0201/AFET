@@ -1,5 +1,5 @@
 #!/bin/sh
-Data='BioInfer'
+Data='Acrobat'
 Indir='Data/'$Data
 Intermediate='Intermediate/'$Data
 Outdir='Results/'$Data

@@ -48,6 +48,17 @@ int main(int argc, const char * argv[]) {
             snprintf(filename, sizeof(filename), "Intermediate/%s/type_type_kb.txt", indir);
         }
         weights = load_weights(filename, type_count, alpha, distance, hierarchy);
+
+
+        // //print out the weights
+        for (int i = 0; i < type_count; i++){
+            for (int j = 0; j < type_count; j++){
+                std::cout << weights[i][j] << std::endl;
+            }
+        }
+        // exit(-1);
+
+        
         
         /* Initialize matrix A and B*/
         A = malloc_matrix_double(feature_count, embed_size);
