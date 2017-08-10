@@ -94,6 +94,8 @@ int main(int argc, const char * argv[]) {
         std::vector<std::vector<int> >clean_and_noise=load_data_noise(filename, train_y, y_count, hierarchy, mention_count);
         mention_set = clean_and_noise[0];
         mention_set_noise  = clean_and_noise[1];
+
+
         
         printf("Start training process\n");
         printf("Clean examples: %d, noise examples: %d\n", (int)mention_set.size(), (int)mention_set_noise.size());

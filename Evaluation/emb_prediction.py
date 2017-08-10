@@ -446,6 +446,7 @@ def predict(indir, outdir, _method, _emb_mode, _predict_mode, _sim_func, _thresh
                     labels = predicter.predict_types_for_mention_topDown(mention_id, _threshold)
                 elif _predict_mode == 'topk':
                     labels = predicter.predict_types_for_mention_topk(mention_id, _threshold)
+
                 for l in labels:
                     g.write(str(mention_id)+'\t'+str(l)+'\t'+'1\n')
                 cnt += 1

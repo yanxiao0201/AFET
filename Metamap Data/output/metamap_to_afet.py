@@ -41,6 +41,7 @@ def proc_file_helper(fileid):
     abbrs = load_abbrs()
     for u in read_file(fileid):
         sent = u['UttText']
+
         tokens, indices = tokenize_with_indices(sent)
         senid_cand = int(u['UttNum'])
         assert(senid_cand == senid + 1)
@@ -71,6 +72,7 @@ def get_mentions_from_utterance(u, total_char_count, tokens, indices, \
     mentions = []
     for p in u['Phrases']:
         phrase = p['PhraseText']
+        phrase_end_pos = int(p['PhraseStartPos']) + int(p['PhraseLength']) 
         for m in p['Mappings']:
             for mc in m['MappingCandidates']:
                 entity_list = mc['MatchedWords']
@@ -80,9 +82,14 @@ def get_mentions_from_utterance(u, total_char_count, tokens, indices, \
                 char_start_pos = int(mccp[0]['StartPos']) - total_char_count
                 char_end_pos = int(mccp[-1]['StartPos']) - total_char_count \
                 + int(mccp[-1]['Length'])
+                #print '@@@', u["UttText"][char_start_pos:char_end_pos]
+
                 assert(char_start_pos >= 0 and char_end_pos >= 0)
                 start = get_token_index(char_start_pos, indices)
                 end = get_token_index(char_end_pos, indices) + 1
+                #print '##', tokens[start:end]
+                if tokens[end-1] == ',' or tokens[end-1] == '.' or tokens[end-1] == ')': end -= 1
+                #if phrase_end_pos-total_char_count-char_end_pos == 2: end -= 1
                 weird_matamap_count = check(weird_matamap_count, entity_list, \
                     tokens, start)
                 add_mention(mentions, entity_list, types, start, end)

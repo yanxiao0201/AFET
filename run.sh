@@ -22,3 +22,5 @@ echo 'Step 3 Predict and Evaluate'
 python Evaluation/emb_prediction.py $Data pl_warp bipartite maximum cosine 0.25
 python Evaluation/evaluation.py $Data pl_warp bipartite
 
+echo 'Step 4 Visualization'
+python visualization.py

@@ -21,6 +21,7 @@ Results are saved to "AFET_to_brat/".
 #     print '-'*50, 'file', fileid, 'has', len(result), 'sentences'
 #     write_file(fileid, result)
 
+
 class Mention:
     def __init__(self, start, end, txt, type):
         # Character-and-document level starting and ending positions.
@@ -79,8 +80,18 @@ class Doc:
             except OSError as exc: # Guard against race condition
                 if exc.errno != errno.EEXIST:
                     raise
-        with open('%s/%s_%s.txt' % (dir, self.docid, label), 'w') as f_txt, \
-        open('%s/%s_%s.ann' % (dir, self.docid, label), 'w') as f_ann:
+
+
+        dir2 = dir + label + '/'
+        if not os.path.exists(os.path.dirname(dir2)):
+            try:
+                os.makedirs(os.path.dirname(dir2))
+            except OSError as exc: # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+
+        with open('%s/%s_afet.txt' % (dir2, self.docid), 'w') as f_txt, \
+        open('%s/%s_afet.ann' % (dir2, self.docid), 'w') as f_ann:
             f_txt.write(self.txt)
             for i, m in enumerate(sorted(self.mentions, key=lambda x: x.start)):
                 f_ann.write('\t'.join(['T%s' % (i+1), m.type + ' ' + \
@@ -184,4 +195,5 @@ def spans(sent):
         offset += len(token)
 
 if __name__ == "__main__":
+
     proc_file()

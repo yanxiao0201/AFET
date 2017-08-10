@@ -5,6 +5,12 @@ mdic_data = pd.read_csv("Intermediate/{}/mention_text.map".format(data_set), nam
 
 mid_data = pd.read_csv("Intermediate/{}/mention.txt".format(data_set), delimiter = '\t',names = ['fmid','mid'], header = None)
 
+
+# 4_18_4_7,adverse effect ,,4,7,4,18,"Hypocalcemia is a common adverse effect , which can potentially be mitigated by the concurrent use of calcium-based phosphate binders ."
+
+
+
+
 #print mid_data
 '''
 WSJ1825_2_15_16,corn,15,16,WSJ1825,2,"The harvest arrives in plenty after last year 's drought-ravaged effort : The government estimates corn output at 7.45 billion bushels , up 51 % from last fall ."
