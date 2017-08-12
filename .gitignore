@@ -9,4 +9,7 @@ Result
 Intermediate_save
 Result_save
 stanza
+*.json
+*.RRF
+*.ann
 
