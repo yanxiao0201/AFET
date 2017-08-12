@@ -12,4 +12,6 @@ stanza
 *.json
 *.RRF
 *.ann
+*.pdf
+*.xml
 
