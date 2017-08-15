@@ -1,32 +1,19 @@
 #!/usr/bin/env python2.7
 
 from __future__ import division
-import sys, os, re, bisect, glob, inspect
+import sys, os, glob, filecmp
 
 
 '''
 Evaluate `EVAL` annotation files against `TRUTH` annotation files.
 '''
-if len(sys.argv) < 2:
-    print "Usage: python eval.py [n|y]"
-    print "use \"n\" to run without type correlation and \"y\" to run with type correlation"
-    sys.exit(1)
-else:
-    flag = sys.argv[1]
 
 path = "/Users/xiaoyan/Documents/brat/data/"
 
 TRUTH = path + "ground_truth/1_afet.ann"
-
-if flag == 'n':
-    EVAL= path + "mapped_type_no_correlation/1_afet.ann" 
-
-elif flag == 'y':
-    EVAL = path + "mapped_type/1_afet.ann"
+EVAL = path + 'AFET_result/1_afet.ann'
 
 
-print EVAL
-print TRUTH
 
 DEBUG = False
 
@@ -37,7 +24,13 @@ def main():
     for truth_file in truth_files:
         for eval_file in eval_files:
             if truth_file.split('/')[-1] == eval_file.split('/')[-1]:
+                check_text(truth_file, eval_file)
                 eval(truth_file, eval_file)
+
+def check_text(truth_file, eval_file):
+    if not filecmp.cmp(truth_file[:-3] + 'txt', eval_file[:-3] + 'txt'):
+        raise RuntimeError('%s and %s have different txt' % \
+            (truth_file, eval_file))
 
 def eval(truth_file, eval_file):
     truth_anns = get_annotations(truth_file)

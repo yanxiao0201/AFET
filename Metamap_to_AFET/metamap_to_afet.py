@@ -7,13 +7,14 @@ import glob
 
 '''
 Convert MetaMap json output to AFET json input.
-Assume the current working directory has `<fileid>.txt.json`s
+Assume the current working directory has "metamap_data/" and "afet_data/" and in "metamap_data/" `<fileid>.txt.json`s 
  that are properly formatted (i.e. can be loaded directly by `json.load`),
  and `Metamap_abbr.txt` exists.
 Usage: `./metamap_to_afet.py > x`
 Result is saved as "<id_or_range_of_ids>_AFET_input.json".
 Errors of MataMap are saved to `x`.
 '''
+
 
 def proc_files():
     # Find all <fileid>.txt.json in the current working directory..
@@ -49,7 +50,7 @@ def proc_file_helper(fileid):
         mentions = get_mentions_from_utterance(u, total_char_count, tokens, \
             indices, weird_matamap_count, abbrs)
         result.append({"tokens": tokens, "mentions": mentions, \
-            "senid": senid, "fileid": str(fileid)})
+            "senid": senid, "fileid": str(fileid), "offsets": indices, "sent":sent})
         total_char_count += len(sent)
     return result
 
@@ -59,8 +60,8 @@ def read_file(fileid):
     return data['AllDocuments'][0]['Document']['Utterances']
 
 def write_file(fileid, result):
-    with open('{}_AFET_input.json'.format(fileid), 'w') as outfile, \
-    open('{}_AFET_input_pretty.json'.format(fileid), 'w') as outfile_p:
+    with open('AFET_input.json'.format(fileid), 'w') as outfile, \
+    open('AFET_input_pretty.json'.format(fileid), 'w') as outfile_p:
         for d in result:
             json.dump(d, outfile)
             outfile.write('\n')

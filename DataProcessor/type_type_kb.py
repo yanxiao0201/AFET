@@ -52,6 +52,7 @@ def share_entity(entityfile, labelmap, output):
     for line in f:
         seg = line.strip('\r\n').split('\t')
         if seg[0] in label_map:
+
             type_entities[label_map[seg[0]]] = set(seg[1].split(';'))
 
     size = len(label_map)

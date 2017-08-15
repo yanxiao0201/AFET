@@ -55,7 +55,7 @@ class MentionReader:
         if mention_json == '':
             return None
         decoded = json.loads(mention_json)
-        sentence = Sentence(decoded['fileid'], decoded['senid'], decoded['tokens'])
+        sentence = Sentence(decoded['fileid'], decoded['senid'], decoded['tokens'], decoded["offsets"], decoded["sent"])
         for m in decoded['mentions']:
             sentence.add_mention(Mention(int(m['start']), int(m['end']), m['labels']))
         if 'pos' in decoded:

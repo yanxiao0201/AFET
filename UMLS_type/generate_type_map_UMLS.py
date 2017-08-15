@@ -40,7 +40,7 @@ def gen_type_maps(UMLS_file_path, abbr_file):
 		for line in f:
 			entries = line.split('|')
 			type_code = entries[1]
-			type_name = entries[2].replace(",", "_").replace(" ", "_")
+			type_name = entries[2].replace(",", "_").replace(" ", "_").strip("\n")
 
 			type_map[type_code] = type_name
 

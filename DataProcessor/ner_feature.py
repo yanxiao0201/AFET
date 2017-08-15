@@ -137,8 +137,24 @@ def pipeline_test(json_file, brown_file, featurefile, labelfile, outdir):
                     gy.write(m_id+'\t'+','.join([str(x) for x in label_ids])+'\n')
 
                     if mention.start >= 0:
-                        gz.write(m_id+','+' '.join(sentence.tokens[mention.start:mention.end])+','+ \
-                        str(mention.start) +','+ str(mention.end)+ ','+ sentence.get_text() + '\n')
+                        sent = sentence.get_orig_text()
+                        offsets = sentence.get_offsets()
+                        tokens = sentence.get_tokens()
+                        c_start = offsets[mention.start]
+                        last_word_idx = mention.end-1
+                        c_end = offsets[last_word_idx] + len(tokens[last_word_idx])
+                        gz.write(m_id+','+sent[c_start:c_end]+','+ \
+                        str(mention.start) +','+ str(mention.end)+ ',' + str(c_start) + ',' + str(c_end) + ',' + \
+                        sentence.get_text() +  '\n')
+                        print '-'*50
+                        print 'correct mention', tokens[mention.start:mention.end]
+                        print 'now mention', sent[offsets[mention.start]:c_end]
+                        print 'tokens', tokens
+                        print 'offsets', offsets
+                        print 'mention.start', mention.start
+                        print 'offsets[mention.start]', offsets[mention.start]
+                        print 'sent', sent
+                        print 'sent[offsets[mention.start]]', sent[offsets[mention.start]]
 
                     count += 1
             except Exception as e:

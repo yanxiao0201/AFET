@@ -36,13 +36,15 @@ class Sentence(object):
     tokens : list
         The token list of this sentence.
     """
-    def __init__(self, fileid, senid, tokens):
+    def __init__(self, fileid, senid, tokens, offsets, sent):
         self.fileid = fileid
         self.senid = senid
         self.tokens = tokens
         self.mentions = []
         self.pos = []
         self.dep = []
+        self.offsets = offsets
+        self.sent = sent
 
     def __str__(self):
         result = 'fileid: %s, senid: %s\n'%(self.fileid, self.senid)
@@ -61,6 +63,15 @@ class Sentence(object):
         return min(len(self.tokens),len(self.pos))
 
     def get_text(self):
-        return ','.join([str(self.fileid), str(self.senid), '"%s"' % " ".join(self.tokens)])
+        return ','.join([str(self.fileid), str(self.senid), '"' + self.sent + '"'])
+
+    def get_orig_text(self):
+        return self.sent
+
+    def get_tokens(self):
+        return self.tokens
+
+    def get_offsets(self):
+        return self.offsets
 
 
