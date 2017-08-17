@@ -164,8 +164,9 @@ def pipeline_test(json_file, brown_file, featurefile, labelfile, outdir):
                         # sentence.get_text() +  '\n'
                         #     print '@'*100
                             exit(1)
-                        gz.write(m_id+',"'+sent[c_start:c_end]+'",'+ \
-                        str(mention.start) +','+ str(mention.end)+ ',' + str(c_start) + ',' + str(c_end) + ',' + \
+                        gz.write(m_id+'\t'+sent[c_start:c_end]+'\t'+ \
+                        str(mention.start) +'\t'+ str(mention.end)+ '\t' + \
+                        str(c_start) + '\t' + str(c_end) + '\t' + \
                         sentence.get_text() +  '\n')
 
 

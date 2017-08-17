@@ -2,7 +2,16 @@ import pandas as pd
 import math
 
 data_set = "Acrobat"
-mdic_data = pd.read_csv("Intermediate/{}/mention_text.map".format(data_set), names = ['fmid','mention','start','end','c_start', 'c_end','pid','senid','sent'], header = None)
+# mdic_data = pd.read_csv("Intermediate/{}/mention_text.map".format(data_set), names = ['fmid','mention','start','end','c_start', 'c_end','pid','senid','sent'], header = None, delimiter = '\t')
+
+li = []
+with open("Intermediate/{}/mention_text.map".format(data_set)) as f:
+	for line in f:
+		ls = line.split('\t')
+		li.append({'fmid': ls[0], 'mention': ls[1], 'start': int(ls[2]), \
+			'end': int(ls[3]), 'c_start': int(ls[4]), 'c_end': int(ls[5]), \
+			'pid': ls[6], 'senid': int(ls[7]), 'sent': ls[8]})
+mdic_data = pd.DataFrame(li)
 
 mid_data = pd.read_csv("Intermediate/{}/mention.txt".format(data_set), delimiter = '\t',names = ['fmid','mid'], header = None)
 
@@ -29,7 +38,12 @@ def get_one_row_from_key(df, row_name, key, check=False):
 			if row['start'] < 0:
 				return None
 			return row
-
+	if len(rows) != 1:
+		print 'df', df
+		print 'row_name', row_name
+		print 'key', key
+		print 'rows', rows
+		exit(1)
 	assert(len(rows) == 1)
 	for _, row in rows.iterrows():
 		return row

@@ -66,7 +66,7 @@ class Sentence(object):
         if str(self.senid) == '0':
             print '('
             exit(1)
-        return ','.join([str(self.fileid), str(self.senid), '"' + self.sent + '"'])
+        return '\t'.join([str(self.fileid), str(self.senid), self.sent])
 
     def get_orig_text(self):
         return self.sent
