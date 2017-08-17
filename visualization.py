@@ -29,9 +29,7 @@ def get_one_row_from_key(df, row_name, key, check=False):
 			if row['start'] < 0:
 				return None
 			return row
-	print '###'
-	print rows
-	print '@@@', key
+
 	assert(len(rows) == 1)
 	for _, row in rows.iterrows():
 		return row
@@ -43,27 +41,23 @@ for index, row in r_data.iterrows():
 	mid = row['mid']
 	tid = row['tid']
 	fmid = get_one_row_from_key(mid_data, 'mid', mid)['fmid']
-	# print get_one_row_from_key(mid_data, 'mid', mid)
-	#print fmid
-	#print mdic_data
 	mdic_row = get_one_row_from_key(mdic_data, 'fmid', fmid, check=True)
 	if mdic_row is None:
 		continue
 	m['mention'] = mdic_row['mention']
 	m['start'] = mdic_row['start']
-	assert(type(m['start'] == "int") and not math.isnan(m['start']))
+	assert(type(m['start']) == "int" or not math.isnan(float(m['start'])))
 	m['end'] = mdic_row['end']
 	m['c_start'] = mdic_row['c_start']
 	m['c_end'] = mdic_row['c_end']
 	m['pid'] = mdic_row['pid']
 	assert(type(m['pid'] == "int"))
 	m['senid'] = mdic_row['senid']
-	assert(type(m['senid'] == "int"))
+	if m['senid'] == 0:
+		print mdic_row
+	assert(type(m['senid'] == "int") and m['senid'] >= 1)
 	m['sent'] = mdic_row['sent']
-
 	m['type'] = get_one_row_from_key(t_data, 'tid', tid)['type']
-
-
 	result.append(m)
 
 	

@@ -63,6 +63,9 @@ class Sentence(object):
         return min(len(self.tokens),len(self.pos))
 
     def get_text(self):
+        if str(self.senid) == '0':
+            print '('
+            exit(1)
         return ','.join([str(self.fileid), str(self.senid), '"' + self.sent + '"'])
 
     def get_orig_text(self):

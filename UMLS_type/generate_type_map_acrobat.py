@@ -2,12 +2,14 @@ import json
 import collections
 import sets
 
-data_file_path = '/Users/xiaoyan/Documents/AFET/UMLS_labels_result/'
+data_file_path = '/Users/xiaoyan/Documents/AFET/UMLS_type/'
 files = ['Metamap_abbr.txt', 'metamap_typing_clean.txt']
 
-UMLS_file_path = '/Users/xiaoyan/Documents/AFET/UMLS_labels_result/'
+UMLS_file_path = '/Users/xiaoyan/Documents/AFET/UMLS_type/'
 dic_file = 'MRSTY.RRF'
 
+
+Data = "Acrobat"
 """
 type_mapping: return type_map = {UMLS_type: Acrobat_type}
 """

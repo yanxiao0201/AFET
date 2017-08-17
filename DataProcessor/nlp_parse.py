@@ -40,7 +40,6 @@ def parse(sentences, g, lock):
         count=0
         for line in sentences:
             sent = json.loads(line.strip('\r\n'))
-
             tokens = sent['tokens']
             try:
                 tuples = parser.parse(' '.join(tokens))

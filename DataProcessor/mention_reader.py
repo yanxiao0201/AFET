@@ -18,6 +18,7 @@ class MentionReader:
     def __init__(self, mention_file):
         self.mention_file = mention_file
         self.input = open(mention_file, 'rb')
+        print '^^^^^^^', mention_file
         self.current = self._decode(self.input.readline())
 
     def close(self):
@@ -55,9 +56,16 @@ class MentionReader:
         if mention_json == '':
             return None
         decoded = json.loads(mention_json)
+        if len(decoded['tokens']) != len(decoded["offsets"]):
+            # print '#'*100
+            # print decoded
+            # print len(decoded['tokens'])
+            # print len(decoded["offsets"])
+            exit(1)
         sentence = Sentence(decoded['fileid'], decoded['senid'], decoded['tokens'], decoded["offsets"], decoded["sent"])
         for m in decoded['mentions']:
-            sentence.add_mention(Mention(int(m['start']), int(m['end']), m['labels']))
+            if m['labels']:
+                sentence.add_mention(Mention(int(m['start']), int(m['end']), m['labels']))
         if 'pos' in decoded:
             sentence.pos = decoded['pos']
         if 'dep' in decoded:
