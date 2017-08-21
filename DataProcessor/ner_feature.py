@@ -72,6 +72,7 @@ def pipeline(json_file, brown_file, outdir):
     count = 0
     gx = open(outdir+'/train_x.txt', 'w')
     gy = open(outdir+'/train_y.txt', 'w')
+    gd = open(outdir+'/mention_reader_debug.txt', 'w')
     f = open(outdir+'/feature.map', 'w')
     t = open(outdir+'/type.txt', 'w')
     print 'start train feature generation'
@@ -80,6 +81,7 @@ def pipeline(json_file, brown_file, outdir):
         if count%10000 == 0:
             print count
         sentence = reader.next()
+        gd.write(str(sentence) + '\n')
         for mention in sentence.mentions:
             try:
                 m_id = '%s_%d_%d_%d'%(sentence.fileid, sentence.senid, mention.start, mention.end)
