@@ -130,47 +130,27 @@ def pipeline_test(json_file, brown_file, featurefile, labelfile, outdir):
         if count%1000 == 0:
             print count
         sentence = reader.next()
+        print '!!!!!!'
         for mention in sentence.mentions:
-            if sentence.senid == 0:
-                print '('*100
-                exit(1)
+            print '@@@@@!!!!!!'
             try:
                 m_id = '%s_%d_%d_%d'%(sentence.fileid, sentence.senid, mention.start, mention.end)
+                print '$$$$$!!!!!!'
                 feature_ids, label_ids = ner_feature.extract(sentence, mention)
                 if len(label_ids)>0:
+                    print '^^^^^^^!!!!!!'
                     gx.write(m_id+'\t'+','.join([str(x) for x in feature_ids])+'\n')
                     gy.write(m_id+'\t'+','.join([str(x) for x in label_ids])+'\n')
 
                     if mention.start >= 0:
+                        print '*******!!!!!!'
                         sent = sentence.get_orig_text()
-                        offsets = sentence.get_offsets()
-                        tokens = sentence.get_tokens()
-                        c_start = offsets[mention.start]
-                        last_word_idx = mention.end-1
-                        c_end = offsets[last_word_idx] + len(tokens[last_word_idx])
-                        # if ',' in sent[c_start:c_end]:
-                        if len(tokens) != len(offsets):
-                        #     print 'len(tokens)', len(tokens)
-                        #     print 'len(offsets)', len(offsets)
-                        #     # exit(1)
-                        # # if m_id == '1_27_21_22':
-                        #     print tokens
-                        #     print mention.start
-                        #     print mention.end
-                        #     print tokens[mention.start:mention.end]
-                        #     print 'offsets', offsets
-                        #     print 'c_start', c_start
-                        #     print 'sent[c_start]', sent[c_start]
-                        #     print m_id+','+sent[c_start:c_end]+','+ \
-                        # str(mention.start) +','+ str(mention.end)+ ',' + str(c_start) + ',' + str(c_end) + ',' + \
-                        # sentence.get_text() +  '\n'
-                        #     print '@'*100
-                            exit(1)
-                        gz.write(m_id+'\t'+sent[c_start:c_end]+'\t'+ \
+                        c_start = mention.get_c_start()
+                        c_end = mention.get_c_end()
+                        gz.write(m_id+'\t'+mention.get_entity()+'\t'+ \
                         str(mention.start) +'\t'+ str(mention.end)+ '\t' + \
                         str(c_start) + '\t' + str(c_end) + '\t' + \
                         sentence.get_text() +  '\n')
-
 
                     count += 1
             except Exception as e:

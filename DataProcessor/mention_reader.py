@@ -56,16 +56,15 @@ class MentionReader:
         if mention_json == '':
             return None
         decoded = json.loads(mention_json)
-        if len(decoded['tokens']) != len(decoded["offsets"]):
-            # print '#'*100
-            # print decoded
-            # print len(decoded['tokens'])
-            # print len(decoded["offsets"])
-            exit(1)
-        sentence = Sentence(decoded['fileid'], decoded['senid'], decoded['tokens'], decoded["offsets"], decoded["sent"])
+        sentence = Sentence(decoded['fileid'], decoded['senid'], decoded['tokens'], decoded["sent"])
         for m in decoded['mentions']:
             if m['labels']:
-                sentence.add_mention(Mention(int(m['start']), int(m['end']), m['labels']))
+                if not 'entity' in m:
+                    print m
+                    print sentence
+                    exit(1)
+                sentence.add_mention(Mention(int(m['start']), int(m['end']), \
+                    m['entity'], m['labels'], int(m['c_start']), int(m['c_end'])))
         if 'pos' in decoded:
             sentence.pos = decoded['pos']
         if 'dep' in decoded:

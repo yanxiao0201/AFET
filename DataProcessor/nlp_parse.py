@@ -64,8 +64,9 @@ def parse(sentences, g, lock):
                             count+=1
                             continue
                         index1, index2 = find_index(new_tokens, mention)
-                        if index1 != -1 and index2 != -1:
-                            mentions.append({'start':index1, 'end':index2, 'labels':m['labels']})
+                        if index1 != -1 and index2 != -1:               
+                            mentions.append({'start':index1, 'end':index2, 'labels':m['labels'], "entity": m['entity'], "c_start": m['c_start'], "c_end": m['c_end']})
+
                     sent['tokens'] = new_tokens
                     sent['pos'] = new_pos
                     sent['dep'] = new_dep

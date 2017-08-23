@@ -12,16 +12,28 @@ class Mention(object):
     labels : list
         The labels.
     """
-    def __init__(self, start, end, labels):
+    def __init__(self, start, end, entity, labels, c_start, c_end):
         self.start = start
         self.end = end
+        self.entity = entity
         self.labels = labels
+        self.c_start = c_start
+        self.c_end = c_end
 
     def __str__(self):
         result = 'start: %d, end: %d\n' % (self.start, self.end)
         for label in self.labels:
             result += label + ','
         return result
+
+    def get_entity(self):
+        return self.entity
+
+    def get_c_start(self):
+        return self.c_start
+
+    def get_c_end(self):
+        return self.c_end
 
 
 class Sentence(object):
@@ -36,14 +48,13 @@ class Sentence(object):
     tokens : list
         The token list of this sentence.
     """
-    def __init__(self, fileid, senid, tokens, offsets, sent):
+    def __init__(self, fileid, senid, tokens, sent):
         self.fileid = fileid
         self.senid = senid
         self.tokens = tokens
         self.mentions = []
         self.pos = []
         self.dep = []
-        self.offsets = offsets
         self.sent = sent
 
     def __str__(self):
@@ -63,9 +74,6 @@ class Sentence(object):
         return min(len(self.tokens),len(self.pos))
 
     def get_text(self):
-        if str(self.senid) == '0':
-            print '('
-            exit(1)
         return '\t'.join([str(self.fileid), str(self.senid), self.sent])
 
     def get_orig_text(self):
@@ -74,7 +82,6 @@ class Sentence(object):
     def get_tokens(self):
         return self.tokens
 
-    def get_offsets(self):
-        return self.offsets
+
 
 
